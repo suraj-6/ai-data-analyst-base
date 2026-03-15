@@ -11,7 +11,7 @@ from backend.database import get_schema
 load_dotenv()
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     temperature=0,
     google_api_key=os.getenv("GOOGLE_API_KEY"),
 )
@@ -40,9 +40,13 @@ Rules:
 - Output ONLY the SQL query. No explanation, no markdown, no backticks.
 - Use strftime('%m', sale_date) for month filtering (e.g. '03' for March).
 - Always JOIN products and sales on product_id when product names are needed.
+- Always include at least one numeric/aggregated column (e.g. SUM(revenue) AS total_revenue, COUNT(*) AS total_orders) so results have numbers to analyze.
+- Never SELECT only text columns — always pair them with a calculated metric.
 - Use aliases for clarity (e.g. SUM(revenue) AS total_revenue).
+- For "most", "highest", "top" questions return ALL rows with their metrics ordered descending, not just LIMIT 1.
 
 SQL:"""
+
 
     response = llm.invoke([HumanMessage(content=prompt)])
     sql = response.content.strip().replace("```sql", "").replace("```", "").strip()
