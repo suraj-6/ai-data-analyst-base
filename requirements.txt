@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-google-genai
+langgraph
+google-generativeai
+pandas
+plotly
+streamlit
+python-dotenv
+pydantic
+requests
+watchfiles
